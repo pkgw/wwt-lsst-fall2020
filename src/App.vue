@@ -4,6 +4,12 @@
 
     <div id="overlays">
       <p>{{ coordText }}</p>
+
+      <ul id="images">
+        <li v-for="(n, index) in imageNames" :key="n" :class="{ active: index == currentImageIndex }">
+          {{ n }}
+        </li>
+      </ul>
     </div>
 
     <ul id="controls">
@@ -258,6 +264,17 @@ body {
     border-width: 0;
     margin: 0;
     padding: 0;
+  }
+}
+
+#images {
+  list-style-type: none;
+  margin: 35px 0 0 0;
+  padding: 0;
+  font-size: 120%;
+
+  .active {
+    font-weight: bold;
   }
 }
 
