@@ -57,13 +57,13 @@
 </template>
 
 <script lang="ts">
-import { Component, Prop } from "vue-property-decorator";
+import { Component } from "vue-property-decorator";
 
 import * as screenfull from "screenfull";
 
 import { fmtDegLat, fmtDegLon, fmtHours } from "@wwtelescope/astro";
 import { ImageSetType } from "@wwtelescope/engine-types";
-import { SetupForImagesetOptions, WWTAwareComponent } from "@wwtelescope/engine-vuex";
+import { WWTAwareComponent } from "@wwtelescope/engine-vuex";
 
 type ToolType = "crossfade" | "choose-background" | null;
 
@@ -150,6 +150,8 @@ export default class App extends WWTAwareComponent {
   }
 
   created() {
+    this.backgroundImagesets = [...skyBackgroundImagesets];
+
     this.waitForReady().then(async () => {
       const folder = await this.loadImageCollection({
         url: "http://localhost:19001/index.wtml"
@@ -214,7 +216,12 @@ export default class App extends WWTAwareComponent {
 
   onKeydown(e: KeyboardEvent) {
     if (e.key == ' ' || e.key == 'Spacebar') {
-      this.currentImageIndex = (this.currentImageIndex + 1) % this.imageNames.length;
+      if (e.shiftKey) {
+        this.currentImageIndex = (this.currentImageIndex - 1) % this.imageNames.length;
+      } else {
+        this.currentImageIndex = (this.currentImageIndex + 1) % this.imageNames.length;
+      }
+
       this.setForegroundImageByName(this.imageNames[this.currentImageIndex]);
     }
   }
