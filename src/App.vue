@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" v-on:keydown="onKeydown" tabindex="-1">
     <WorldWideTelescope wwt-namespace="lsst-demo-app"></WorldWideTelescope>
 
     <div id="overlays">
@@ -93,6 +93,9 @@ export default class App extends WWTAwareComponent {
   currentTool: ToolType = null;
   fullscreenModeActive = false;
 
+  imageNames: string[] = [];
+  currentImageIndex = 0;
+
   get coordText() {
     if (this.wwtRenderType == ImageSetType.sky) {
       return `${fmtHours(this.wwtRARad)} ${fmtDegLat(this.wwtDecRad)}`;
@@ -147,12 +150,24 @@ export default class App extends WWTAwareComponent {
   }
 
   created() {
-    //let prom = this.waitForReady().then(() => {
-    //});
+    this.waitForReady().then(async () => {
+      const folder = await this.loadImageCollection({
+        url: "http://localhost:19001/index.wtml"
+      });
 
-    //const folder = await this.loadImageCollection({
-    //  url: this.embedSettings.wtmlUrl
-    //});
+      folder.get_places().forEach((place, index) => {
+        const imgset = place.get_studyImageset();
+
+        if (imgset != null) {
+          this.imageNames.push(imgset.get_name());
+
+          if (index == 0) {
+            this.setForegroundImageByName(imgset.get_name());
+            this.gotoTarget({place: place, instant: true, noZoom: false, trackObject: false});
+          }
+        }
+      });
+    });
   }
 
   mounted() {
@@ -194,6 +209,13 @@ export default class App extends WWTAwareComponent {
     // is not necesary in practice here.
     if (screenfull.isEnabled) {
       this.fullscreenModeActive = screenfull.isFullscreen;
+    }
+  }
+
+  onKeydown(e: KeyboardEvent) {
+    if (e.key == ' ' || e.key == 'Spacebar') {
+      this.currentImageIndex = (this.currentImageIndex + 1) % this.imageNames.length;
+      this.setForegroundImageByName(this.imageNames[this.currentImageIndex]);
     }
   }
 }
