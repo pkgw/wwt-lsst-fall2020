@@ -9,7 +9,7 @@ import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 import { createPlugin } from "@wwtelescope/engine-vuex";
 import { EmbedSettings } from "@wwtelescope/embed-common";
 
-import Embed from "./Embed.vue";
+import App from "./App.vue";
 
 Vue.config.productionTip = false;
 
@@ -20,7 +20,7 @@ const store = new Vuex.Store({});
 
 Vue.use(createPlugin(), {
   store,
-  namespace: "wwt-embed"
+  namespace: "lsst-demo-app"
 });
 
 library.add(faAdjust);
@@ -39,9 +39,9 @@ new Vue({
   store,
   el: "#app",
   render: createElement => {
-    return createElement(Embed, {
+    return createElement(App, {
       props: {
-        "wwtNamespace": "wwt-embed",
+        "wwtNamespace": "lsst-demo-app",
         "embedSettings": settings
       }
     });

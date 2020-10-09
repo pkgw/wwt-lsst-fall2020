@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <WorldWideTelescope wwt-namespace="wwt-embed"></WorldWideTelescope>
+    <WorldWideTelescope wwt-namespace="lsst-demo-app"></WorldWideTelescope>
 
     <div id="overlays">
       <p v-show="embedSettings.showCoordinateReadout">{{ coordText }}</p>
