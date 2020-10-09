@@ -7,7 +7,7 @@
 
       <ul id="images">
         <li v-for="(n, index) in imageNames" :key="n" :class="{ active: index == currentImageIndex }">
-          {{ n }}
+          <span @click="selectImage(index)">{{ n }}</span>
         </li>
       </ul>
     </div>
@@ -68,7 +68,7 @@ import { Component } from "vue-property-decorator";
 import * as screenfull from "screenfull";
 
 import { fmtDegLat, fmtDegLon, fmtHours } from "@wwtelescope/astro";
-import { ImageSetType } from "@wwtelescope/engine-types";
+import { WWTBooleanSetting, ImageSetType } from "@wwtelescope/engine-types";
 import { WWTAwareComponent } from "@wwtelescope/engine-vuex";
 
 type ToolType = "crossfade" | "choose-background" | null;
@@ -101,6 +101,7 @@ export default class App extends WWTAwareComponent {
 
   imageNames: string[] = [];
   currentImageIndex = 0;
+  previousImageIndex = 0;
 
   get coordText() {
     if (this.wwtRenderType == ImageSetType.sky) {
@@ -159,6 +160,8 @@ export default class App extends WWTAwareComponent {
     this.backgroundImagesets = [...skyBackgroundImagesets];
 
     this.waitForReady().then(async () => {
+      this.applySetting([WWTBooleanSetting.showCrosshairs, true]);
+
       const folder = await this.loadImageCollection({
         url: "http://localhost:19001/index.wtml"
       });
@@ -220,15 +223,21 @@ export default class App extends WWTAwareComponent {
     }
   }
 
+  selectImage(index: number) {
+    this.previousImageIndex = this.currentImageIndex;
+    this.currentImageIndex = index;
+    this.setForegroundImageByName(this.imageNames[index]);
+  }
+
   onKeydown(e: KeyboardEvent) {
     if (e.key == ' ' || e.key == 'Spacebar') {
       if (e.shiftKey) {
-        this.currentImageIndex = (this.currentImageIndex - 1) % this.imageNames.length;
+        this.selectImage((this.currentImageIndex - 1) % this.imageNames.length);
       } else {
-        this.currentImageIndex = (this.currentImageIndex + 1) % this.imageNames.length;
+        this.selectImage((this.currentImageIndex + 1) % this.imageNames.length);
       }
-
-      this.setForegroundImageByName(this.imageNames[this.currentImageIndex]);
+    } else if (e.key == 'f') {
+      this.selectImage(this.previousImageIndex);
     }
   }
 }
@@ -275,6 +284,10 @@ body {
 
   .active {
     font-weight: bold;
+  }
+
+  li span {
+    cursor: pointer;
   }
 }
 
