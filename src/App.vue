@@ -172,7 +172,7 @@ export default class App extends WWTAwareComponent {
       this.applySetting([WWTBooleanSetting.showCrosshairs, true]);
 
       const folder = await this.loadImageCollection({
-        url: "http://localhost:19001/index.wtml"
+        url: "https://wwtwebstatic.blob.core.windows.net/lssttemp/nocdn.wtml"
       });
 
       folder.get_places().forEach((place, index) => {
