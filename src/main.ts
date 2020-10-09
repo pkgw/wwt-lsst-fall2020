@@ -7,7 +7,6 @@ import { faAdjust, faCompress, faExpand, faMountain, faSearchMinus, faSearchPlus
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome';
 
 import { createPlugin } from "@wwtelescope/engine-vuex";
-import { EmbedSettings } from "@wwtelescope/embed-common";
 
 import App from "./App.vue";
 
@@ -32,9 +31,6 @@ library.add(faSearchPlus);
 library.add(faSlidersH);
 Vue.component('font-awesome-icon', FontAwesomeIcon);
 
-const queryParams = new URLSearchParams(window.location.search);
-const settings = EmbedSettings.fromQueryParams(queryParams.entries());
-
 new Vue({
   store,
   el: "#app",
@@ -42,7 +38,6 @@ new Vue({
     return createElement(App, {
       props: {
         "wwtNamespace": "lsst-demo-app",
-        "embedSettings": settings
       }
     });
   }

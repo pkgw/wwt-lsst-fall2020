@@ -3,7 +3,7 @@
     <WorldWideTelescope wwt-namespace="lsst-demo-app"></WorldWideTelescope>
 
     <div id="overlays">
-      <p v-show="embedSettings.showCoordinateReadout">{{ coordText }}</p>
+      <p>{{ coordText }}</p>
     </div>
 
     <ul id="controls">
@@ -46,7 +46,7 @@
       </div>
     </div>
 
-    <div id="credits" v-show="embedSettings.creditMode == CreditMode.Default">
+    <div id="credits">
       <p>Powered by <a href="https://worldwidetelescope.org/home/">AAS WorldWide
       Telescope</a>
       <a href="https://worldwidetelescope.org/home/"><img alt="WWT Logo" src="./assets/logo_wwt.png" /></a>
@@ -64,7 +64,6 @@ import * as screenfull from "screenfull";
 import { fmtDegLat, fmtDegLon, fmtHours } from "@wwtelescope/astro";
 import { ImageSetType } from "@wwtelescope/engine-types";
 import { SetupForImagesetOptions, WWTAwareComponent } from "@wwtelescope/engine-vuex";
-import { CreditMode, EmbedSettings } from "@wwtelescope/embed-common";
 
 type ToolType = "crossfade" | "choose-background" | null;
 
@@ -89,11 +88,7 @@ const skyBackgroundImagesets: BackgroundImageset[] = [
 ];
 
 @Component
-export default class Embed extends WWTAwareComponent {
-  CreditMode = CreditMode
-
-  @Prop({ default: new EmbedSettings() }) readonly embedSettings!: EmbedSettings;
-
+export default class App extends WWTAwareComponent {
   backgroundImagesets: BackgroundImageset[] = [];
   currentTool: ToolType = null;
   fullscreenModeActive = false;
@@ -152,98 +147,12 @@ export default class Embed extends WWTAwareComponent {
   }
 
   created() {
-    let prom = this.waitForReady().then(() => {
-      for (const s of this.embedSettings.asSettings()) {
-        this.applySetting(s);
-      }
-    });
+    //let prom = this.waitForReady().then(() => {
+    //});
 
-    if (this.embedSettings.tourUrl.length) {
-      prom = prom.then(async () => {
-        // TODO: figure out a good thing to do here
-        this.backgroundImagesets = [];
-
-        await this.loadAndPlayTour({
-          url: this.embedSettings.tourUrl
-        });
-      });
-    } else {
-      // Many more possibilities if we're not playing a tour ...
-      if (this.embedSettings.wtmlUrl.length) {
-        prom = prom.then(async () => {
-          const folder = await this.loadImageCollection({
-            url: this.embedSettings.wtmlUrl
-          });
-
-          if (this.embedSettings.wtmlPlace) {
-            for (const pl of folder.get_places()) {
-              if (pl.get_name() == this.embedSettings.wtmlPlace) {
-                /* This is nominally an async Action, but with `instant: true` it's ... instant */
-                this.gotoTarget({
-                  place: pl,
-                  noZoom: false,
-                  instant: true,
-                  trackObject: true
-                })
-              }
-            }
-          }
-        });
-      }
-
-      prom.then(() => {
-        // setupForImageset() will apply a default background that is appropriate
-        // for the foreground, but we want to be able to override it.
-
-        let backgroundWasInitialized = false;
-        let bgName = this.embedSettings.backgroundImagesetName;
-
-        if (this.embedSettings.foregroundImagesetName.length) {
-          const img = this.lookupImageset(this.embedSettings.foregroundImagesetName);
-
-          if (img !== null) {
-            const options: SetupForImagesetOptions = { foreground: img };
-
-            // For setup of planetary modes to work, we need to pass the specified
-            // background imageset to setupForImageset().
-            if (bgName.length) {
-              const bkg = this.lookupImageset(bgName);
-              if (bkg !== null) {
-                options.background = bkg;
-                backgroundWasInitialized = true;
-              }
-            }
-
-            this.setupForImageset(options);
-          }
-        }
-
-        if (!backgroundWasInitialized) {
-          if (!bgName.length) {
-            // Empty bgname implies that we should choose a default background. If
-            // setupForImageset() didn't do that for us, go with:
-            bgName = "Digitized Sky Survey (Color)";
-          }
-
-          this.setBackgroundImageByName(bgName);
-        }
-
-        // TODO: DTRT in different modes.
-        this.backgroundImagesets = [...skyBackgroundImagesets];
-        let foundBG = false;
-
-        for (const bgi of this.backgroundImagesets) {
-          if (bgi.imagesetName == bgName) {
-            foundBG = true;
-            break;
-          }
-        }
-
-        if (!foundBG) {
-          this.backgroundImagesets.unshift(new BackgroundImageset(bgName, bgName));
-        }
-      });
-    }
+    //const folder = await this.loadImageCollection({
+    //  url: this.embedSettings.wtmlUrl
+    //});
   }
 
   mounted() {
