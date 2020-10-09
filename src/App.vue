@@ -10,6 +10,15 @@
           <span @click="selectImage(index)">{{ n }}</span>
         </li>
       </ul>
+
+      <p>Controls:</p>
+      <ul>
+        <li><b>Spacebar</b>: move down in image list</li>
+        <li><b>Shift-spacebar</b>: move up in image list</li>
+        <li><b>f</b>: flip to previous image</li>
+        <li>Click on an image name to select it</li>
+        <li>Use the toolbox at the top-right for more controls</li>
+      </ul>
     </div>
 
     <ul id="controls">
@@ -278,7 +287,7 @@ body {
 
 #images {
   list-style-type: none;
-  margin: 35px 0 0 0;
+  margin: 35px 0;
   padding: 0;
   font-size: 120%;
 
