@@ -241,7 +241,7 @@ export default class App extends WWTAwareComponent {
   onKeydown(e: KeyboardEvent) {
     if (e.key == ' ' || e.key == 'Spacebar') {
       if (e.shiftKey) {
-        this.selectImage((this.currentImageIndex - 1) % this.imageNames.length);
+        this.selectImage((this.currentImageIndex + this.imageNames.length - 1) % this.imageNames.length);
       } else {
         this.selectImage((this.currentImageIndex + 1) % this.imageNames.length);
       }
