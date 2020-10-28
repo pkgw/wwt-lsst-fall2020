@@ -1,8 +1,8 @@
 {
-  "author": "The AAS WorldWide Telescope Team <wwt@aas.org>",
+  "author": "Peter Williams <peter.williams@aas.org>",
   "bugs": {
-    "email": "wwt@aas.org",
-    "url": "https://github.com/pkgw/wwt-webgl-engine/issues"
+    "email": "peter.williams@aas.org",
+    "url": "https://github.com/pkgw/wwt-lsst-fall2020/issues"
   },
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.28",
@@ -41,12 +41,12 @@
     "vue-template-compiler": "^2.6.11",
     "vuex-module-decorators": "^0.16.1"
   },
-  "homepage": "https://worldwidetelescope.org/home/",
+  "homepage": "https://newton.cx/~peter/wwt-lsst-fall2020/",
   "keywords": [
     "AAS WorldWide Telescope"
   ],
   "license": "MIT",
-  "name": "lsstdemoapp",
+  "name": "wwt-lsst-fall2020",
   "scripts": {
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint src",
