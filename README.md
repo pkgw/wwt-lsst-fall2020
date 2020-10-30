@@ -13,6 +13,6 @@ Data processed using toasty:
 
 #### https://toasty.readthedocs.io/
 
-with custom hacks to work with the input simulation data.
+with custom hacks to work with the input simulation data (see `pipeline/`).
 
 Licensed under the MIT License.
