@@ -66,6 +66,8 @@
       Telescope</a>
       <a href="https://worldwidetelescope.org/home/"><img alt="WWT Logo" src="./assets/logo_wwt.png" /></a>
       <a href="https://aas.org/"><img alt="AAS Logo" src="./assets/logo_aas.png" /></a>
+      Supported by <a href="https://www.nsf.gov/awardsearch/showAward?AWD_ID=2004840">NSF CSSI-2004840</a>
+      <a href="https://nsf.gov/"><img alt="NSF Logo" src="./assets/logo_nsf.png" /></a>
       </p>
     </div>
   </div>
