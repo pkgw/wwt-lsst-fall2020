@@ -79,7 +79,7 @@ import { Component } from "vue-property-decorator";
 import * as screenfull from "screenfull";
 
 import { fmtDegLat, fmtDegLon, fmtHours } from "@wwtelescope/astro";
-import { WWTBooleanSetting, ImageSetType } from "@wwtelescope/engine-types";
+import { ImageSetType } from "@wwtelescope/engine-types";
 import { WWTAwareComponent } from "@wwtelescope/engine-vuex";
 
 type ToolType = "crossfade" | "choose-background" | null;
@@ -171,7 +171,7 @@ export default class App extends WWTAwareComponent {
     this.backgroundImagesets = [...skyBackgroundImagesets];
 
     this.waitForReady().then(async () => {
-      this.applySetting([WWTBooleanSetting.showCrosshairs, true]);
+      this.applySetting(["showCrosshairs", true]);
 
       const folder = await this.loadImageCollection({
         url: "https://wwtwebstatic.blob.core.windows.net/lssttemp/nocdn.wtml"
